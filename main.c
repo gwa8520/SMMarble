@@ -15,12 +15,19 @@
 #define FOODFILEPATH "marbleFoodConfig.txt"
 #define FESTFILEPATH "marbleFestivalConfig.txt"
 
+#define MAX_PLAYER	100
+
 
 //board configuration parameters
 static int board_nr;
 static int food_nr;
 static int festival_nr;
 
+static int player_nr;
+
+static int player_energy[MAX_PLAYER];
+static int player_position[MAX_PLAYER];
+static char player_name[MAX_PLAYER][MAX_CHARNAME];
 
 
 //function prototypes
@@ -36,8 +43,25 @@ void* findGrade(int player, char *lectureName); //find the grade from the player
 void printGrades(int player); //print all the grade history of the player
 #endif
 
-
-
+void generatePlayers(int n, int initEnergy){
+	//n time loop
+	
+	int i;
+	for(i=0;i<n;i++){
+	
+	// 이름 받기  
+		printf("write player's name");
+		scanf("%s",player_name[i][0]); 
+		fflush(stdin);
+	
+	//포지션
+		player_position[i]=0;
+	
+	//에너지  
+		player_energy[i]=initEnergy;
+	
+	}
+}
 
 int rolldie(int player)
 {
@@ -54,7 +78,7 @@ int rolldie(int player)
     return (rand()%MAX_DIE + 1);
 }
 
-
+#if 0
 //action code when a player stays at a node
 void actionNode(int player)
 {
@@ -65,7 +89,7 @@ void actionNode(int player)
             break;
     }
 }
-
+#endif
 
 
 int main(int argc, const char * argv[]) {
@@ -94,7 +118,7 @@ int main(int argc, const char * argv[]) {
     }
     
     printf("Reading board component......\n");
-    while ( fscanf(fp," %s, %i, %i, %i", name, type, credit, energy) == 4 ) //read a node parameter set
+    while ( fscanf(fp," %s, %i, %i, %i", name, &type, &credit, &energy) == 4 ) //read a node parameter set
     {
     	smmObj_genllode(name, type, credit, energy);
     	board_nr++;
@@ -104,8 +128,10 @@ int main(int argc, const char * argv[]) {
     printf("Total number of board nodes : %i\n", board_nr);
     
     for(i=0;i<board_nr;i++){
-    	printf("node %i : %s, %i\n", smmObj_nollode(i), smmObj_getNodeTypr(i) );
+    	printf("node %i : %s, %i(%s)\n", smmObj_nollode(i), smmObj_getNodeType(i), smmObj_getTypeName(smmObj_getNodeType(i)) );
 	}
+    
+    printf("(%s)",smmObj_getTypeName(SMMNODE_TYPE_LECTURE));
     
     
     //2. food card config 
@@ -143,14 +169,19 @@ int main(int argc, const char * argv[]) {
     
     
     //2. Player configuration ---------------------------------------------------------------------------------
-    /*
+    
     do
     {
         //input player number to player_nr
+        printf("input player no.:");
+    	scanf("%d",player_nr); 
+    	fflush(stdin);
     }
-    while ();
-    generatePlayers();
-    */
+    while (player_nr<0 || player_nr>MAX_PLAYER);
+     
+    
+    generatePlayer(player_nr,initEnergy);
+	
     
     //3. SM Marble game starts ---------------------------------------------------------------------------------
     while () //is anybody graduated?
@@ -160,7 +191,7 @@ int main(int argc, const char * argv[]) {
         //4-1. initial printing
         //printPlayerStatus();
         
-        //4-2. die rolling (if not in experiment)
+        //4-2. die rolling (if not in experiment) 해봐라ㅏㅏ 
         
         
         //4-3. go forward
@@ -173,5 +204,6 @@ int main(int argc, const char * argv[]) {
         
     }
     
+    system("PAUSE");
     return 0;
 }
