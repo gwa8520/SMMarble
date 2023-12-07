@@ -5,7 +5,6 @@
 //  Created by Juyeop Kim on 2023/11/05.
 //
 
-#ifndef smm_object_h
 #define smm_object_h
 
 #define SMMNODE_TYPE_LECTURE	0
@@ -41,18 +40,25 @@
     C-
 */
 
+typedef enum smmObjType{
+	smmObjType_board=0,
+	smmObjType_card,		//헤더로 옮기기' 
+	smmObjType_grade
+}smmObjType_t;
+
 
 
 //object generation
 void smmObj_genNode(char* name, int type, int credit, int energy);
 
 //member retrieving
-char* smmObj_getnodename(int node_nr);
-int smmObj_getnodetype( int node_nr);
+char* smmObj_getNodeName(int node_nr);
+int smmObj_getNodeType(int node_nr);
+int smmObj_getNodeCredit(int node_nr);
+int smmObj_getNodeEnergy(int node_nr);
 
 //element to string
 char* smmObj_getTypeName(int type);
 
 
-
-#endif /* smm_object_h */
+/* smm_object_h */
