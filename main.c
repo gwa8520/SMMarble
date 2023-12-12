@@ -1,4 +1,4 @@
-//
+
 //  main.c
 //  SMMarble
 //
@@ -63,7 +63,7 @@ void printGrades(int player){
  
 	for(i=0;i<smmdb_len(LISTNO_OFFSET_GRADE+player);i++){
 		
-			gradeptr=void* smmdb_getData(LISTNO_OFFSET_GRADE+player, i);
+			gradeptr= smmdb_getData(LISTNO_OFFSET_GRADE+player, i);
 			printf("%s: %i\n",smmObj_getNodeName(gradeptr),smmObj_getNodeGrade(gradeptr));
 	}
 
@@ -129,11 +129,11 @@ int rolldie(int player)
 //action code when a player stays at a node
 void actionNode(int player)
 {
-	void*boardptr=void* smmdb_getData(int list_nr, int index);
+	void*boardptr= smmdb_getData(LISTNO_NODE, cur_player[player].position);
 	//int type = smmObj_getNodeType(cur_player[player].position);
 	int type=smmObj_getNodeType(boardptr);
 	void*gradeptr;
-	char name=smmObj_getNodeName(gradeptr)
+	char *name=smmObj_getNodeName(gradeptr);
     
 	switch(type)
     {
@@ -141,8 +141,8 @@ void actionNode(int player)
         //case lecture:
         case SMMNODE_TYPE_LECTURE:
          if
-		(cur_player[player].accumCredit += smmObj_getNodeCredit(boardptr);
-		(cur_player[player].energy -= smmObj_getNodeEnergy(boardptr);
+		 (cur_player[player].accumCredit += smmObj_getNodeCredit(boardptr));
+		(cur_player[player].energy -= smmObj_getNodeEnergy(boardptr));
 		
 		//grade
 		gradeptr= smmObj_genObject(char* name, smmObject_t, int type, int credit,0); 
@@ -160,7 +160,7 @@ void goForward(int player, int step){
 	void*boardptr
 	cur_player[player].position += step;
 	
-	void*boardptr=void* smmdb_getData(int list_nr, int index);
+	void*boardptr= smmdb_getData(int list_nr, int index);
 	
 	printf("%s go to node %i (name: %s)\n",
 			cur_player[player].name,cur_player[player].position,
@@ -268,7 +268,7 @@ int main(int argc, const char * argv[]) {
     }
     while (player_nr<0 || player_nr>MAX_PLAYER);
     
-    cur_player= (player_t*)malloc(player_nr*sizeof)
+    cur_player= (player_t*)malloc(player_nr*sizeof);
 
     
     generatePlayers(player_nr,initEnergy);
