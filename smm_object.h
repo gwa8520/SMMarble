@@ -16,6 +16,7 @@
 #define SMMNODE_TYPE_FESTIVAL	6
 
 #define SMMNODE_TYPE_MAX		7
+#define MAX_CHARNAME            200 //
 
 /* node type :
     lecture,
@@ -40,11 +41,34 @@
     C-
 */
 
+
+typedef enum smmObjGrade{
+	smmObjGrade_Ap,
+	smmObjGrade_A0,
+	smmObjGrade_Am,
+	smmObjGrade_Bp,
+	smmObjGrade_B0,
+	smmObjGrade_Bm,
+	smmObjGrade_Cp,
+	smmObjGrade_C0,
+	smmObjGrade_Cm
+} smmObjGrade_e;
+
 typedef enum smmObjType{
 	smmObjType_board=0,
 	smmObjType_card,		//헤더로 옮기기' 
 	smmObjType_grade
 }smmObjType_t;
+
+typedef struct smmObject{
+	char name[MAX_CHARNAME];
+	smmObjType_t objtype;
+	int type;
+	int credit;
+	int energy;
+	smmObjGrade_e grade;
+} smmObject_t;
+
 
 
 

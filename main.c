@@ -145,8 +145,8 @@ void actionNode(int player)
 		(cur_player[player].energy -= smmObj_getNodeEnergy(boardptr));
 		
 		//grade
-		gradeptr= smmObj_genObject(char* name, smmObject_t, int type, int credit,0); 
-    	int smmdb_addTail(LISTNO_OFFSET_GRADE+player , gradeptr); 
+		gradeptr= smmObj_genObject(name, smmObjType_grade,0,smmObj_getNodeCredit(boardptr),0,0); 
+    	smmdb_addTail(LISTNO_OFFSET_GRADE+player , gradeptr); 
 		
 		break;	
 			
@@ -157,14 +157,14 @@ void actionNode(int player)
 
 void goForward(int player, int step){
 	
-	void*boardptr
+	void*boardptr;
 	cur_player[player].position += step;
 	
-	void*boardptr= smmdb_getData(int list_nr, int index);
+	boardptr= smmdb_getData(LISTNO_NODE, cur_player[player].position);
 	
 	printf("%s go to node %i (name: %s)\n",
-			cur_player[player].name,cur_player[player].position,
-			smmObj_getNodeName(boardptr);
+			(cur_player[player].name,cur_player[player].position),
+			smmObj_getNodeName(boardptr));
 }
 
 
@@ -198,8 +198,8 @@ int main(int argc, const char * argv[]) {
     printf("Reading board component......\n");
     while ( fscanf(fp," %s, %i, %i, %i", name, &type, &credit, &energy) == 4 ) //read a node parameter set
     {
-    	void*boardObj= smmObj_genObject(char* name, smmObject_t, int type, int credit, int energy,0); 
-    	int smmdb_addTail(LISTNO_NODE, void* boardobj); 
+    	void *boardObj= smmObj_genObject(name, smmObjType_board, type,credit,energy,0); 
+    	smmdb_addTail(LISTNO_NODE, boardobj); 
     	
     	if (type == SMMNODE_TYPE_HOME)
     		initEnergy = energy;
@@ -211,7 +211,7 @@ int main(int argc, const char * argv[]) {
     
     for(i=0;i<board_nr;i++){
     	
-    	void*boardObj=void* smmdb_getData(LISTNO_NODE, i); 
+    	void*boardObj=smmdb_getData(LISTNO_NODE, i); 
     	printf("node %i : %s, %i(%s),credit %i, energy %i\n",
 		 i, smmObj_getNodeName(boardObj), smmObj_getNodeType(boardObj), smmObj_getTypeName(smmObj_getNodeType(boardObj)),
 				smmObj_getNodeCredit(boardObj), smmObj_getNodeEnergy(boardObj));
@@ -268,7 +268,7 @@ int main(int argc, const char * argv[]) {
     }
     while (player_nr<0 || player_nr>MAX_PLAYER);
     
-    cur_player= (player_t*)malloc(player_nr*sizeof);
+    cur_player= (player_t*)malloc(player_nr*sizeof(player_t));
 
     
     generatePlayers(player_nr,initEnergy);
