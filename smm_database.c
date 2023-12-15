@@ -222,3 +222,38 @@ void* smmdb_getData(int list_nr, int index)
     
     return obj;
 }
+
+char smmdb_getRandomGrade(const char *grades, int length){
+	
+	srand(time(NULL));
+	int randomIndex=rand()%length;
+	return grades[randomIndex];	//문자 A,B,C중에서 랜덤하게 출력  
+	
+}
+
+int smmdb_getSubjectBoard(){
+	
+	FILE *file=fopen("marbleBoardConfig.txt","r");	//보드 메모 오픈  
+	
+	if(file==NULL){
+		
+		fprintf(stderr, "Error opening file.\n");	//에러 핸들링  
+		return 0;
+	}
+	
+	char line[100];
+	
+	//파일에서 읽어오기
+	while(fgets(line,sizeof(line),file)!=NULL){
+		
+	//	line[strcspn(line,\n)]=0;
+		
+		char smmdb_getRandomGrade(const char *grades, int gradeLength);
+	} 
+	
+	fclose(file);
+	
+	return 0;
+	
+	
+}

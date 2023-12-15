@@ -64,7 +64,7 @@ void printGrades(int player){
 	for(i=0;i<smmdb_len(LISTNO_OFFSET_GRADE+player);i++){
 		
 			gradeptr= smmdb_getData(LISTNO_OFFSET_GRADE+player, i);
-			printf("%s: %i\n",smmObj_getNodeName(gradeptr),smmObj_getNodeGrade(gradeptr));
+			//printf("%s: %i\n",smmObj_getNodeName(gradeptr),smmObj_genNodeGrade);
 	}
 
 }
@@ -103,7 +103,7 @@ void generatePlayers(int n, int initEnergy){
 	
 	//에너지  
 		//player_energy[i]=initEnergy;
-	    cur_player[i].energy=initEnergy;	//initEnergy???????
+	    cur_player[i].energy=initEnergy;	
 		cur_player[i].accumCredit=0;
 		cur_player[i].flag_graduate=0;	    
 	    
@@ -167,6 +167,22 @@ void goForward(int player, int step){
 			smmObj_getNodeName(boardptr));
 }
 
+void printFileContents(const char *filename){ 	//초반 파일 열어보기  
+	
+	FILE *file=fopen(filename,"r");
+	
+	if (file==NULL){
+		perror("Error opening file");
+		return;
+	}
+	
+	int c;
+	while((c=fgetc(file))!=EOF){
+		putchar(c);
+	}
+	fclose(file);
+}
+
 
 int main(int argc, const char * argv[]) {
     
@@ -199,13 +215,20 @@ int main(int argc, const char * argv[]) {
     while ( fscanf(fp," %s, %i, %i, %i", name, &type, &credit, &energy) == 4 ) //read a node parameter set
     {
     	void *boardObj= smmObj_genObject(name, smmObjType_board, type,credit,energy,0); 
-    	smmdb_addTail(LISTNO_NODE, boardobj); 
+    	smmdb_addTail(LISTNO_NODE, boardObj); 
+	
     	
     	if (type == SMMNODE_TYPE_HOME)
     		initEnergy = energy;
     		board_nr++;
         //store the parameter set
     }
+	
+	const char *filename=BOARDFILEPATH;	//파일 지정  
+	
+	printFileContents(filename);
+	
+	
     fclose(fp); 
     printf("Total number of board nodes : %i\n", board_nr); 
     

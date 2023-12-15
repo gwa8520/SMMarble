@@ -54,6 +54,7 @@ typedef enum smmObjGrade{
 	smmObjGrade_Cm
 } smmObjGrade_e;
 
+
 typedef enum smmObjType{
 	smmObjType_board=0,
 	smmObjType_card,		//헤더로 옮기기' 
@@ -84,5 +85,6 @@ int smmObj_getNodeEnergy(void* obj);
 //element to string
 char* smmObj_getTypeName(int type);
 
+void* smmObj_genObject(char* name,smmObjType_t objtype, int type, int credit, int energy,smmObjGrade_e grade);
 
 /* smm_object_h */

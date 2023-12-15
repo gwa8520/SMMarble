@@ -8,6 +8,7 @@
 #include "smm_common.h"
 #include "smm_object.h"
 #include <string.h>
+#include <time.h>
 
 #define MAX_NODE  		100
 #define MAX_NODETYPE    7
