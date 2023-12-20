@@ -196,7 +196,7 @@ int smmdb_deleteData(int list_nr, int index)
 */
 int smmdb_len(int list_nr)
 {
-    return list_cnt[list_nr];
+    return list_cnt[list_nr];  
 }
 
 

@@ -44,6 +44,7 @@ static char player_name[MAX_PLAYER][MAX_CHARNAME];
 #endif
 
 //function prototypes
+
 #if 0
 int isGraduated(void); //check if any player is graduated
 void generatePlayers(int n, int initEnergy); //generate a new player
@@ -131,7 +132,7 @@ void actionNode(int player)
 {
 	void*boardptr= smmdb_getData(LISTNO_NODE, cur_player[player].position);
 	//int type = smmObj_getNodeType(cur_player[player].position);
-	int type=smmObj_getNodeType(boardptr);
+	int type=smmObj_getNodeType(boardptr);  
 	void*gradeptr;
 	char *name=smmObj_getNodeName(gradeptr);
     
@@ -164,23 +165,7 @@ void goForward(int player, int step){
 	
 	printf("%s go to node %i (name: %s)\n",
 			(cur_player[player].name,cur_player[player].position),
-			smmObj_getNodeName(boardptr));
-}
-
-void printFileContents(const char *filename){ 	//초반 파일 열어보기  
-	
-	FILE *file=fopen(filename,"r");
-	
-	if (file==NULL){
-		perror("Error opening file");
-		return;
-	}
-	
-	int c;
-	while((c=fgetc(file))!=EOF){
-		putchar(c);
-	}
-	fclose(file);
+			smmObj_getNodeName(boardptr)); 
 }
 
 
@@ -194,6 +179,7 @@ int main(int argc, const char * argv[]) {
     int i;
     int initEnergy;
     int turn=0;
+    int foodName;
     
     board_nr = 0;
     food_nr = 0;
@@ -212,7 +198,7 @@ int main(int argc, const char * argv[]) {
     }
     
     printf("Reading board component......\n");
-    while ( fscanf(fp," %s, %i, %i, %i", name, &type, &credit, &energy) == 4 ) //read a node parameter set
+    while ( fscanf(fp, "%s %i %i %i" ,name, &type, &credit, &energy) == 4 ) //read a node parameter set
     {
     	void *boardObj= smmObj_genObject(name, smmObjType_board, type,credit,energy,0); 
     	smmdb_addTail(LISTNO_NODE, boardObj); 
@@ -220,17 +206,14 @@ int main(int argc, const char * argv[]) {
     	
     	if (type == SMMNODE_TYPE_HOME)
     		initEnergy = energy;
-    		board_nr++;
+    	board_nr++;
+    	
         //store the parameter set
     }
-	
-	const char *filename=BOARDFILEPATH;	//파일 지정  
-	
-	printFileContents(filename);
-	
+
 	
     fclose(fp); 
-    printf("Total number of board nodes : %i\n", board_nr); 
+ 	printf("Total number of board nodes : %i\n", board_nr);
     
     for(i=0;i<board_nr;i++){
     	
@@ -253,8 +236,10 @@ int main(int argc, const char * argv[]) {
     
     printf("\n\nReading food card component......\n");
     
-    while (1) //read a food parameter set
+    while (fscanf(fp, "%s %i" ,foodName, &energy) == 2) //read a food parameter set
     {
+    	void *boardObj= smmObj_genObject(foodName,smmObjType_t, type, credit, energy, 0); 
+    	smmdb_addTail(LISTNO_NODE, boardObj); 
         //store the parameter set
     }
     fclose(fp);
@@ -270,8 +255,10 @@ int main(int argc, const char * argv[]) {
     }
     
     printf("\n\nReading festival card component......\n");
-    while (1) //read a festival card string
+    while (fscanf(fp, "%s" ,name) == 1) //read a festival card string
     {
+    	void *boardObj= smmObj_genObject(name, smmObjType_board, type,credit,energy,0); 
+    	smmdb_addTail(LISTNO_NODE, boardObj); 
         //store the parameter set
     }
     fclose(fp);
@@ -305,7 +292,7 @@ int main(int argc, const char * argv[]) {
         //4-1. initial printing
         printPlayerStatus();
         
-        //4-2. die rolling (if not in experiment) 해봐라ㅏㅏ 
+        //4-2. die rolling (if not in experiment) 
         die_result = rolldie(turn);
         
         
