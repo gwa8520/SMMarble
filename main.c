@@ -134,7 +134,7 @@ void actionNode(int player)
 	//int type = smmObj_getNodeType(cur_player[player].position);
 	int type=smmObj_getNodeType(boardptr);  
 	void*gradeptr;
-	char *name=smmObj_getNodeName(gradeptr);
+	char *name=smmObj_getNodeName(gradeptr);  
     
 	switch(type)
     {
